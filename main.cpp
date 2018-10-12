@@ -1,47 +1,64 @@
 #include "util.hpp"
 
-#define log(a) std::cout << a
-#define logn(a) std::cout << a << std::endl
-
 int main(int argc, char* argv[]) {
-    
-    for (int i = 0; i < argc; i++) {
-        logn (argv[i]);
-    }
 
-    char line[10];
+    char line[6];
     int count = 0;
-    int N = 80000;
+    int N = 33000;
     int a[N];
 
-    while( std::cin.good() ) {
-        std::cin.getline(line, sizeof(line));
-        a[count] = atoi(line);
-        count++;
-        if(count >= N){
-            count--;
-            break;
+    {
+        ScopedTimer t("File read", true);
+        while( std::cin.good() ) {
+            std::cin.getline(line, sizeof(line));
+            a[count] = atoi(line);
+            count++;
+            if(count >= N){
+                count--;
+                break;
+            }
         }
     }
-    // Sort::print(a, count);
 
-    {
-        ScopedTimer t("Empty scope", true);
+    Sort::isSortedPrettyPrint(a, count);
+
+    int sel[N], ins[N], mer[N]; 
+    for (int i = 0; i < N; i++){
+        sel[i] = ins[i] = mer[i] = a[i];
     }
 
+    std::cout << "\nSelection sorting " << count << " values..." << std::endl;
+    {
+        ScopedTimer t("Selection sort", true);
+        Selection::sort(sel, count);
+    }
+    Sort::isSortedPrettyPrint(sel, count);
+
+
+    std::cout << "\nInsertion sorting " << count << " values..." << std::endl;
     {
         ScopedTimer t("Insertion sort", true);
-        std::cout << "Sorting " << count << " values..." << std::endl;
-        Sort::insertion(a, count);
+        Insertion::sort(ins, count);
+    }
+    Sort::isSortedPrettyPrint(ins, count);
+
+
+    
+    std::cout << "\nMerge sorting " << count << " values..." << std::endl;
+    {
+        ScopedTimer t("Merge sort", true);
+        Merge::sort(mer, count);
     }
 
     {
-        ScopedTimer t("Merge sort", true);
-        std::cout << "Sorting " << count << " values..." << std::endl;
-        Merge::sort(a, count);
+        ScopedTimer t("\nLinear sort check and print", true);
+        Sort::isSortedPrettyPrint(mer, count);
     }
-    
-    // Sort::print(a, count);
+
+
+    {
+        ScopedTimer t("\nTimer overhead", true);
+    }
 
     return 0;
 }

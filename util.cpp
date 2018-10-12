@@ -32,7 +32,7 @@ std::string ScopedTimer::getDuration_pretty(){
     }
 
     std::string out = name_;
-    out.append(", time: ");
+    out.append(": ");
     out.append(to_string(us));
     out.append(unit);
     return out;
@@ -43,7 +43,7 @@ void ScopedTimer::prettyPrint(const std::string& string){
 }
 
 ScopedTimer::ScopedTimer(){
-    name_ = "Unnamed";
+    name_ = "_Unnamed_";
     printAtScopeEnd_ = false;
     start = std::chrono::system_clock::now();
 }
@@ -67,29 +67,23 @@ ScopedTimer::~ScopedTimer(){
     }
 }
 
-void Sort::insertion(int a[], int N){
-    for (int i = 1; i < N; i++){
-        for (int j = i; j > 0; j--){
-            // print(a, N);
-            if (a[j] < a[j - 1]) {
-                exch(a, j, j - 1);
-            }
+bool Sort::isSorted(int a[], int N){
+    for (int n = 0; n < N - 1; n++){
+        if (a[n] > a[n + 1]) {
+            return false;
         }
     }
+    return true;
 }
 
-// void Sort::binary(int a[], int N){
+void Sort::isSortedPrint(int a[], int N){
+    Sort::print(a, N);
+    Sort::isSortedPrettyPrint(a, N);
+}
 
-//     if (N == 2) {
-//         if (a[0] > a[1]){
-//             exch(a, 0, 1);
-//         }
-//     } else {
-//         Sort::binary(a, (int) N / 2);
-//         Sort::binary(a, (int) N / 2);
-//     }
-
-// }
+void Sort::isSortedPrettyPrint(int a[], int N){
+    std::cout << "Array is " << (Sort::isSorted(a, N) ? "SORTED" : "NOT sorted") << std::endl;
+}
 
 void Sort::exch(int a[], int i, int j){
     int tmp = a[i];
@@ -103,6 +97,36 @@ void Sort::print(int a[], int N){
         std::cout << a[i] << ", ";
     }
     std::cout << a[N - 1] << "]" << std::endl;
+}
+
+void Sort::print(int a[], int low, int high){
+    std::cout << "[";
+    for (int i = low; i < high; i++) {
+        std::cout << a[i] << ", ";
+    }
+    std::cout << a[high] << "]" << std::endl;
+}
+
+void Selection::sort(int a[], int N){
+    for (int n = 0; n < N; n++) {
+        int min = n;
+        for (int m = n + 1; m < N; m++) {
+            if (a[m] < a[min]) {
+                min = m;
+            }
+        }
+        Sort::exch(a, n, min);
+    }
+}
+
+void Insertion::sort(int a[], int N){
+    for (int i = 1; i < N; i++){
+        for (int j = i; j > 0; j--){
+            if (a[j] < a[j - 1]) {
+                Sort::exch(a, j, j - 1);
+            }
+        }
+    }
 }
 
 
@@ -119,27 +143,28 @@ void Merge::sort(int a[], int low, int high){
     if (high <= low) {
         return;
     }
-    int mid = low + (high - low)/2;
+
+    int mid = low + (high - low) / 2;
+
     sort(a, low, mid);
     sort(a, mid + 1, high);
     merge(a, low, mid, high);
 }
 
-
 void Merge::merge(int a[], int low, int mid, int high){
-    for (int n = low; n < high; n++){
+    for (int n = low; n <= high; n++){
         Merge::aux[n] = a[n];
     }
 
     int i = low; 
     int j = mid + 1;
 
-    for (int n = low; n < high; n++) {
+    for (int n = low; n <= high; n++) {
 
-        if(i > mid) {
+        if (i > mid) {
             a[n] = Merge::aux[j++];
 
-        } else if (j > mid) {
+        } else if (j > high) {
             a[n] = Merge::aux[i++];
 
         } else if (Merge::aux[j] < Merge::aux[i]) {
@@ -147,8 +172,9 @@ void Merge::merge(int a[], int low, int mid, int high){
 
         } else {
             a[n] = Merge::aux[i++];
-        }
 
+        }
+        
     }
 
 }

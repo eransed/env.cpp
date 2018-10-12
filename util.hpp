@@ -7,6 +7,9 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#define log(a) std::cout << a
+#define logn(a) std::cout << a << std::endl
+
 template <typename T>
 std::string to_string (const T& t){
     std::stringstream ss;
@@ -33,18 +36,30 @@ public:
 
 class Sort {
 public:
-    static void insertion(int a[], int N);
+    static bool isSorted(int a[], int N);
+    static void isSortedPrint(int a[], int N);
+    static void isSortedPrettyPrint(int a[], int N);
     static void exch(int a[], int i, int j);
     static void print(int a[], int N);
-    // static void binary(int a[], int N);
+    static void print(int a[], int low, int high);
+};
+
+class Selection {
+public:
+    static void sort(int a[], int N);
+};
+
+class Insertion {
+public:
+    static void sort(int a[], int N);
 };
 
 class Merge {
-public:
     static int * aux;
-    static void sort(int a[], int N);
     static void sort(int a[], int low, int mid);
     static void merge(int a[], int low, int mid, int high);
+public:
+    static void sort(int a[], int N);
 };
 
 #endif
