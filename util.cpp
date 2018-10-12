@@ -82,7 +82,7 @@ void Sort::isSortedPrint(int a[], int N){
 }
 
 void Sort::isSortedPrettyPrint(int a[], int N){
-    std::cout << "Array is " << (Sort::isSorted(a, N) ? "SORTED" : "NOT sorted") << std::endl;
+    std::cout << "Array N=" << N << " " << (Sort::isSorted(a, N) ? "ORDERERD" : "UNORDERED") << std::endl;
 }
 
 void Sort::exch(int a[], int i, int j){
