@@ -1,11 +1,11 @@
+#ifndef UTIL_H
+#define UTIL_H
+
 #include <iostream>
 #include <string>
 #include <chrono>
 #include <sstream>
 #include <cmath>
-
-#ifndef UTIL_H
-#define UTIL_H
 
 #define log(a) std::cout << a
 #define logn(a) std::cout << a << std::endl
